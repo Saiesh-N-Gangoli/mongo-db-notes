@@ -1,0 +1,82 @@
+Mongo DB Notes
+--------------
+
+MongoDB is a 
+-->  Document Oriented: Document-oriented refers that the data in the database is stored in the form of documents which are specifically JSON objects.
+-->  NOSQL based 
+-->  Open-source database management system. [Name orginated: HU-"MONGO"-US]
+
+Note: MongoDB is used to store unstructured and semi-structured data. Whereas we use structured databases(SQL, oracle) to store structured data in form of rows and columns which are basically tables.
+
+Advantages:
+-----------
+--> Flexibility
+--> Scalability
+--> Performance
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Structure of MongoDB
+---------------------
+--> Databases have JSON data which is basically called as collections. Collections are nothing but the table which we have in our structured databases. 
+--> The data inside the collections is called as document. Document is nothing but the data in the tables of structured datbases.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+BSON: BSON stands for Binary JSON. It is the data format that MongoDB uses to organize and store data.
+
+Advantages:
+-----------
+--> High read and write speeds.
+--> Reduces storage requirements.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Basic commonds in MongoDB:
+--------------------------
+1) show dbs or show databases : Used to see the databases in MongoDB.
+
+2) use database_name : Used to create databases with specified name.
+
+3) db.dropDatabase() : Used to drop the database which is currently in use.
+
+4) db.createCollection('collection_name') : Used to create a collection inside a prefered database.
+
+5) db.collection_name.drop() : Used to drop the collection with specified collection name.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CRUD Operations in MongoDB:
+---------------------------
+
+1) Creating Documents in collection:
+------------------------------------
+
+Case 1: Inserting a single record into the collection:
+-----------------------------------------------------
+db.collection_name.insertOne({field1:value1, field2:value2, field3:value3, ....});
+
+Case 2: Inserting multiple record into the collection:
+-----------------------------------------------------
+db.collection_name.insertMany([{field1:value1, field2:value2, field3:value3},{field1:value1, field2:value2, field3:value3},{...}]);
+
+Ordered and unordered inserts:
+------------------------------
+Ordered Inserts: This is the default behviour of MongoDB. Here the database behaviour is like if suppose there are 4 insertions in the databases and lets suppose 2nd data is wrong, then after the execution of the first data the insertion terminates.
+
+Example: db.collection_name.insertMany([{id:1, name:saiesh, subject:cse},{id:1, name:dinesh, subject:ise}, {id:2, name:tharun, subject:ece}]);
+In this example after inserting the first document, the insertion fails because of same ID conflicts. 
+
+Unordered Inserts: Here the database behaviour is like if suppose there are 4 insertions in the databases and lets suppose 2nd data is wrong, Then the proper 3 insertions will be added and the one which is not correct throws the error.
+
+--> We need to add {ordered: false} at the end of document insertion query.
+
+Example: db.collection_name.insertMany([{id:1, name:saiesh, subject:cse},{id:1, name:dinesh, subject:ise}, {id:2, name:tharun, subject:ece}, {ordered: false}]);
+In this example after inserting the first document and third document, the second data insertion fails because of same ID conflicts. 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2) Reading documents in collection:
+-----------------------------------
+
+
+
