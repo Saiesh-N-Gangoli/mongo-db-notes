@@ -44,6 +44,14 @@ Basic commonds in MongoDB:
 
 5) db.collection_name.drop() : Used to drop the collection with specified collection name.
 
+6) mongoimport jsonfilename.json -d database_name -c collection_name : importing json files into the database.
+
+7) mongoimport jsonfilename.json -d database_name -c collection_name --jsonArray : importing json files in the DB which is in the form of array of objects.
+
+8) mongoexport -d database-name -c collection-name -o locationofexport : exporting the data from the db to a required location.
+
+Note: File size of mongoDB should be less or equal to 16MB.
+
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 CRUD Operations in MongoDB:
@@ -73,10 +81,54 @@ Unordered Inserts: Here the database behaviour is like if suppose there are 4 in
 
 Example: db.collection_name.insertMany([{id:1, name:saiesh, subject:cse},{id:1, name:dinesh, subject:ise}, {id:2, name:tharun, subject:ece}, {ordered: false}]);
 In this example after inserting the first document and third document, the second data insertion fails because of same ID conflicts. 
+
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 2) Reading documents in collection:
 -----------------------------------
+--> find() --> db.collection_name.find({'key':'value'}) [Finds all the data with all the matches of key and values]
+
+--> findOne() --> db.collection_name.findOne('key': 'value'}) [Finds the first data from all the matches of key and values]
+
+Comparison operators:
+---------------------
+a) $eq: Equal operator helps in checking the exact equality.
+Syntax: db.collection_name.find({'key' : {$eq: value}})
+Example: db.products.find({'price': {$eq: 699}}) --> This filters the result of the products which has the price match of exact 699.
+
+b) $ne: Not equal operator helps in checking inequality.
+Syntax: db.collection_name.find({'key' : {$ne: value}})
+Example: db.products.find({'price': {$eq: 400}}) --> This filters the result of the products which has the price match not equal to 400.
+
+c) $gt: Greater than operator helps in checking criteria greater than a certain value.
+Syntax: db.collection_name.find({'key' : {$gt: value}})
+Example: db.products.find({'price': {$gt: 4500}}) --> This filters the result of the products which has the price greater than 4500.
+
+d) $gte: Greater than or equal to operator helps in checking criteria greater than or equal to a certain value.
+Syntax: db.collection_name.find({'key' : {$gte: value}})
+Example: db.products.find({'price': {$gt: 3600}}) --> This filters the result of the products which has the price greater than or equal to 3600.
+
+e) $lt: Lesser than operator helps in checking criteria lesser than a certain value.
+Syntax: db.collection_name.find({'key' : {$lt: value}})
+Example: db.products.find({'price': {$gt: 232}}) --> This filters the result of the products which has the price lesser than 232.
+
+f) $lte: Lesser than or equal to operator helps in checking criteria lesser than or equal to a certain value.
+Syntax: db.collection_name.find({'key' : {$gte: value}})
+Example: db.products.find({'price': {$gt: 3600}}) --> This filters the result of the products which has the price greater than or equal to 3600.
+
+g) $in: It helps in finding the details in a given array.
+Syntax: db.collection_name.find({'key' : {$in: [array_item1, array_item2, ...]}})
+Example: db.products.find({'price': {$in: [12, 14, 16]}}) --> This filters the result of the products which has the price of 12, 14 and 16.
+
+h) $nin: It helps in excluding the details in a given array.
+Syntax: db.collection_name.find({'key' : {$nin: [array_item1, array_item2, ...]}})
+Example: db.products.find({'price': {$in: [11, 12, 13]}}) --> This filters the result of the products which has the price of 12, 14 and 16.
+
+Cursors:
+--------
+
+
+
 
 
 
