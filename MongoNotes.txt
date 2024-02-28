@@ -98,7 +98,7 @@ Example: db.products.find({'price': {$eq: 699}}) --> This filters the result of 
 
 b) $ne: Not equal operator helps in checking inequality.
 Syntax: db.collection_name.find({'key' : {$ne: value}})
-Example: db.products.find({'price': {$eq: 400}}) --> This filters the result of the products which has the price match not equal to 400.
+Example: db.products.find({'price': {$ne: 400}}) --> This filters the result of the products which has the price match not equal to 400.
 
 c) $gt: Greater than operator helps in checking criteria greater than a certain value.
 Syntax: db.collection_name.find({'key' : {$gt: value}})
@@ -106,7 +106,7 @@ Example: db.products.find({'price': {$gt: 4500}}) --> This filters the result of
 
 d) $gte: Greater than or equal to operator helps in checking criteria greater than or equal to a certain value.
 Syntax: db.collection_name.find({'key' : {$gte: value}})
-Example: db.products.find({'price': {$gt: 3600}}) --> This filters the result of the products which has the price greater than or equal to 3600.
+Example: db.products.find({'price': {$gte: 3600}}) --> This filters the result of the products which has the price greater than or equal to 3600.
 
 e) $lt: Lesser than operator helps in checking criteria lesser than a certain value.
 Syntax: db.collection_name.find({'key' : {$lt: value}})
@@ -114,7 +114,7 @@ Example: db.products.find({'price': {$gt: 232}}) --> This filters the result of 
 
 f) $lte: Lesser than or equal to operator helps in checking criteria lesser than or equal to a certain value.
 Syntax: db.collection_name.find({'key' : {$gte: value}})
-Example: db.products.find({'price': {$gt: 3600}}) --> This filters the result of the products which has the price greater than or equal to 3600.
+Example: db.products.find({'price': {$lte: 3600}}) --> This filters the result of the products which has the price lesser than or equal to 3600.
 
 g) $in: It helps in finding the details in a given array.
 Syntax: db.collection_name.find({'key' : {$in: [array_item1, array_item2, ...]}})
@@ -122,12 +122,60 @@ Example: db.products.find({'price': {$in: [12, 14, 16]}}) --> This filters the r
 
 h) $nin: It helps in excluding the details in a given array.
 Syntax: db.collection_name.find({'key' : {$nin: [array_item1, array_item2, ...]}})
-Example: db.products.find({'price': {$in: [11, 12, 13]}}) --> This filters the result of the products which has the price of 12, 14 and 16.
+Example: db.products.find({'price': {$nin: [11, 12, 13]}}) --> This filters the result of the products which doesn't has the price of 12, 14 and 16.
 
 Cursors:
 --------
+Cursors in MongoDB will help in retreving a large amount of data from queries.
 
+Methods in cursors:
+-------------------
+a) limit(): It helps in retrieving the amount of documents required.
+Syntax: db.collection_name.find({'key': {$gte: value}}).limit(x)
+Here x means the number documents that are required.
+Example: db.products.find({'price': {$lte: 3600}}).limit(5) --> This retrieves the first 5 documents from the database.
 
+b) sort(): It helps in sorting the data in ascending or descending order.
+Syntax: db.collection_name.find({'key': {$gte: value}}).limit(x).sort('key': 1 or -1)
+1 --> Ascending order.
+-1 --> Descending order.
+Example: db.products.find({'price': {$lte: 3600}}).limit(5).sort('price': 1) --> This retrieves the first 5 documents from the database in ascending order.
+	 db.products.find({'price': {$lte: 3600}}).limit(5).sort('price': -1) --> This retrieves the first 5 docs from the database in descending order.
+
+c) count(): It simply helps in counting the number of documents.
+Syntax: db.collection_name.find({'key': {$gte: value}}).count()
+Example: db.products.find({'price': {$lte: 3600}}).count() --> This returns the count of documents having price less than 3600.
+
+d) skip(): It helps in skipping the number of documents specified at the top.
+Syntax: db.collection_name.find({'key': {$gte: value}}).skip(x)
+Example: db.products.find({'price': {$gte: 3600}}).skip(2) --> This skips the first 2 documents of price greater than 3600 and displays the remaining.
+
+Points to remember:
+-------------------
+--> Skip is inefficient for larger offset.
+--> Sorting of large dataset directly affects the performance.
+
+Logical operators:
+------------------
+a) $and: AND operator gives the result only when both the condition satisfies.
+Syntax: db.collection_name.find({$and:[{condition1},{condition2},...]})
+Example: db.products.find({$and:[{'price':{$gt:200}}, {'name':{$eq:'Audi'}]}) --> This displays the name Audi with price greater than 200.
+Note: db.products.find('price':{$gt: 200}, 'name':{$eq: 'Audi'}) --> The find method implicitly considers this as an AND operation.
+
+b) $or: OR operator gives the result either if one condition satisfies.
+Syntax: db.collection_name.find({$or:[{condition1},{condition2},...]})
+Example: db.products.find({$or:[{'rate':{$lt:1200}}, {'brand':{$eq:'Suzuki'}]}) --> This displays the brand Suzuki with price less than 1200.
+
+c) $nor: NOR gives the rest of results other than the results of OR operation.
+Syntax: db.collection_name.find({$nor:[{condition1},{condition2},...]})
+Example: db.products.find({$nor:[{'price':{$lt:333}}, {'stock':{$eq:'Kerosene'}]}) --> This displays all the results which doesn't have price less than 333 or stock Kerosene.
+
+d) $not: NOT gives the results excluding the condition.
+Syntax: db.collection_name.find('key':{$not:{$eq: 300}})
+Example: db.products.find('price':{$not:{$eq:300}}) --> This displays all the results where price is not equal to 300.
+Note: db.products.find('price':{$ne:300}) --> This also gives the same result as above.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
