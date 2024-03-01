@@ -177,6 +177,69 @@ Note: db.products.find('price':{$ne:300}) --> This also gives the same result as
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+Complex Expressions:
+--------------------
+This is used to compare same fields in the table.
+
+If we want to make complex operations in the table then we need to use the $expr expression.
+
+Syntax: db.collection_name.find('$expr':{operation: [{$arithematic-operations:[key1, key2, ...]},key-to-compare]}}
+
+Example: db.sales.find('$expr':{$gt: [{$add:[$price, $quantity], $MarginPrice]}}
+
+In this example we can see that we will add price and quantity of the same fields of the table and we will compare if it is greater than the MarginPrice. This kind of operations can be achieved by $expr.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Element Operators:
+------------------
+a) $exists: Exists is simply used to check the existence of a certain field. 
+
+Syntax: db.collection_name.find({key:{$exists: true/false}})
+
+--> True returns the documents where the given field exists and false does the vice versa.
+
+Example: db.products.find({price:{$exists: true}});
+
+--> The above query returns the documents where the price field exists.
+
+b) $type: Type is simply used to check the data type of a certain field.
+
+Syntax: db.collection_name.find({price:{$type: datatype}})
+
+Example: db.products.find({price:{$type: number}});
+
+--> The above query returns the data of price which has the data type of number.
+
+There are number codes for numbers:
+
+1. Double
+
+2. String
+
+3. Object
+
+4. Array
+
+5. Binary Data
+
+6. Undefined
+
+7. Object ID
+
+8. Boolean
+
+9. Date
+
+10. Null
+
+11. Regular Expressions
+
+Example: db.products.find({price:{$type: 2}});
+
+--> The above query returns the data of price which has the data type of String.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
