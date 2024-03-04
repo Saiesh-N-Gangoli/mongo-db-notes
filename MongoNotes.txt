@@ -239,6 +239,128 @@ Example: db.products.find({price:{$type: 2}});
 
 --> The above query returns the data of price which has the data type of String.
 
+c) $size: The size operator helps in finding the size of the documents inside a document. It means that we can fetch the useful data inside the array of objects. 
+
+Syntax: db.collection_name.find('key':{'$size': 'size-of-choice'})
+
+Example: db.products.find('comments': {'$size' : 3})
+
+--> This query will return the comment field in products collection where the array of elements in comments will be of size 3.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Projections: 
+------------
+Whenever we retrieve data from a query we get all the fields with the conditions of the query. But projections helps us in simply retrieving the data which is required.
+
+Syntax: db.collection_name.find('key':{'operator_name': 'value'}, {key1: 1, key2: 1, key3: 1 or key1: 1, key2: 1, key3: 1});
+
+The value against the key represents whether the field should be present or not. 1 represents the field should be present and 0 represents that field should not be present.
+
+Example: db.products.find('price': {'$gt: 3000}, {price:1, id:0});
+
+--> This query returns the price which is greater than 3000 but the fields which the query will return will have the price field but doesn't have id  because it is given the values of 0.
+
+Note: Either inclusions can be performed or the exclusions can be performed. Other than ID we cannot include or exclude fields simultaneously.
+
+Wrong approach: db.products.find('price': {'$gt: 3000}, {price:1, desc:0 id:0});
+
+Right approach: db.products.find('price': {'$gt: 3000}, {price:1, desc:1 id:0}); or db.products.find('price': {'$gt: 3000}, {price:0, desc:0 id:0});
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Managing Embedded Documents:
+----------------------------
+When we have embedded documents which is in the form of array of objects we need to fetch the data and we can simply achieve this by using dot.
+
+Example: Lets suppose we have views field inside the metadata field. We can retrieve the views inside the metadata fields using the below query.
+
+db.comments.find({'metadata.views': {$gt: 1200}})
+
+--> The below query helps in retrieving the views greater than 1200 of the metadata field.
+
+$all and $elemMatch operators:
+------------------------------
+When we have embedded documents we need to retrieve the data and $all and $elemMatch helps in retrieving these data. 
+
+Example: Suppose we need to retrieve all comments from a data where the usernames are known. Then we are supossed to use $all as we need to only compare using a particular field. That is
+
+db.comments.find({'comments.user':{$all: ['Saiesh', 'Jack', 'Vish', 'Deek']}});
+
+--> This query will return the comments where the user names are Saiesh, Jack, Vish and Deek. 
+
+Suppose we need to to retrieve specific comments from a data where the usernames are also known. Then we are supossed to use $elemMatch as we need to compare multiple fields. That is
+
+db.comments.find({'comments':{$elemMatch: {'user': 'Saiesh', 'comment' : 'This was good}}});
+
+--> This query will return the comment named This was good made by the user Saiesh.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+3) Update operations in MongoDB.
+--------------------------------
+Similar to update and updateOne we have updateOne and updateMany in this.
+
+UpdateOne:
+----------
+UpdatOne as the name suggests is used to update a single field's value.
+
+Syntax: db.collection_name.updateOne({condition},{$set:{key:value}});
+
+Example: db.products.updateOne({_id: 1},{$set:{price:326}});
+
+-->This query will update the price to 326 where the update operation takes place.
+
+UpdateMany:
+-----------
+UpdateMany as the name suggests is used to update multiple field's at a time.
+
+Syntax: db.collection_name.upateMany({condition},{$set:{key:value}});
+
+Example and Analyis: 
+---------------------
+db.products.updateOne({price: 100},{$set:{price:326}}); --> This will set the price = 326 where the first price it gets in the collection = 100.
+db.products.updateMany({price: 100},{$set:{price:326}}); --> This will set the price = 326 wherever the price it gets in the collection = 100.
+
+Rename:
+-------
+Renaming the field names can be done using $rename.
+
+Syntax: db.collection_name.updateMany({condition},{$rename:{oldName: NewName}});
+
+Example: db.products.updateMany({price:100},{$rename:{price: newPrice}});
+
+--> The above query will change the field name to newPrice where the price value is 100.
+
+Remove:
+-------
+We can remove certain fields which we don't want using $unset.
+
+Syntax: db.collection_name.updateMany({condition},{$unset:{key:value}});
+
+Example: db.products.updateMany({price:200},{$unset:{name:"", desc:""}});
+
+--> The above query will remove the field name and desc where the price is 200.
+
+Add:
+----
+We can add new fields which doesn't exist in the document.
+
+Syntax: db.collection_name.updateOne({condition},{$set:{newFieldName:newFieldValue }}); 
+
+Example: db.products.updateOne({_id:1},{$set:{newName: "Saiesh"}});
+
+Push:
+-----
+When we need to add data inside array we need to use the push operation.
+
+Syntax: db.collection_name.updateOne({condition}, {$push:{main_field:{inner_field: value}}});
+
+Example: db.products.updateOne({id:1},{$push:{comments:{user:'Saiesh', age:25}}});
+
+--> The above query will add the user and age data to the comments field.
+
+
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
